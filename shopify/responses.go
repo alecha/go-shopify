@@ -29,3 +29,13 @@ type ProductsResponse struct {
 type ProductResponse struct {
 	Product Product `json:"product"`
 }
+
+//ImagesResponse is a response for product images
+type ImagesResponse struct {
+	Images []ProductImage `json:"images"`
+}
+
+//VariantsResponse is a response for product images
+type VariantsResponse struct {
+	Variants []Variant `json:"variants"`
+}

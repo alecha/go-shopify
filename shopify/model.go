@@ -82,11 +82,6 @@ type Fulfillment struct {
 	UpdatedAt       time.Time `json:"updated_at"`
 }
 
-//Image is a product's image
-type Image struct {
-	Src string `json:"src"`
-}
-
 //LineItem is an order line item
 type LineItem struct {
 	FulfillableQuantity int       `json:"fulfillable_quantity"`
@@ -174,7 +169,7 @@ type Product struct {
 	CreatedAt                      time.Time                `json:"created_at"`
 	Handle                         string                   `json:"handle"`
 	ID                             int64                    `json:"id"`
-	Images                         []Image                  `json:"images"`
+	Images                         []ProductImage           `json:"images"`
 	Options                        []map[string]interface{} `json:"options"`
 	ProductType                    string                   `json:"product_type"`
 	PublishedAt                    *time.Time               `json:"published_at"`
@@ -187,6 +182,17 @@ type Product struct {
 	UpdatedAt                      time.Time                `json:"updatedAt"`
 	Variants                       []Variant                `json:"variants"`
 	Vendor                         string                   `json:"vendor"`
+}
+
+//ProductImage is a product's image
+type ProductImage struct {
+	CreatedAt  time.Time `json:"created_at"`
+	ID         int64     `json:"id"`
+	Position   int       `json:"position"`
+	ProductID  int64     `json:"product_id"`
+	VariantIDs []int64   `json:"variant_ids"`
+	Src        string    `json:"src"`
+	UpdatedAt  time.Time `json:"id"`
 }
 
 //Refund is a refund

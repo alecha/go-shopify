@@ -107,3 +107,31 @@ func (shopify *Shopify) GetProduct(productID int64) (*Product, []error) {
 	}
 	return &product.Product, nil
 }
+
+//GetProductImages returns all the orders
+func (shopify *Shopify) GetProductImages(productID int64) ([]ProductImage, []error) {
+	response, errors := shopify.Get(fmt.Sprintf("products/%v/images", productID))
+	if len(errors) > 0 {
+		return nil, errors
+	}
+
+	var images ImagesResponse
+	if err := json.Unmarshal(response, &images); err != nil {
+		return nil, []error{err}
+	}
+	return images.Images, nil
+}
+
+//GetProductVariants returns all the product variants
+func (shopify *Shopify) GetProductVariants(productID int64) ([]Variant, []error) {
+	response, errors := shopify.Get(fmt.Sprintf("products/%v/variants", productID))
+	if len(errors) > 0 {
+		return nil, errors
+	}
+
+	var variants VariantsResponse
+	if err := json.Unmarshal(response, &variants); err != nil {
+		return nil, []error{err}
+	}
+	return variants.Variants, nil
+}
