@@ -1,11 +1,10 @@
-// Package shopify:
-// go-shopify provides an easy-to-use API
-// for making CRUD request to shopify.
+// Package shopify provides an easy-to-use API for making CRUD request to shopify.
 package shopify
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
+
 	"github.com/parnurzeal/gorequest"
 )
 
@@ -13,26 +12,24 @@ import (
 // to wrap our request operations.
 type Shopify struct {
 	// Store domain-name
-	store    string
+	store string
 	// Store API key
-	apiKey   string
+	apiKey string
 	// Store password
-	pass     string
+	pass string
 }
 
 const (
 	domain = ".myshopify.com/admin"
 )
 
-// Creates a New Shopify Store API object with the
+// New Creates a New Shopify Store API object with the
 // store, apiKey and pass of your store.
 // Usage:
 // 	shopify.New("mystore", "XXX","YYY")
 func New(store, apiKey, pass string) Shopify {
-
 	shop := Shopify{store: store, apiKey: apiKey, pass: pass}
 	//	fmt.Println("[New] Creating Shopify client with: ", store, apiKey, pass)
-
 	return shop
 }
 
@@ -43,8 +40,8 @@ func (shopify *Shopify) createTargetURL(endpoint string) string {
 	return result
 }
 
-// Extracts Json Bytes from map[string]interface
-func getJsonBytesFromMap(data map[string]interface{}) ([]byte, error) {
+// getJSONBytesFromMap Extracts Json Bytes from map[string]interface
+func getJSONBytesFromMap(data map[string]interface{}) ([]byte, error) {
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		fmt.Println("Invalid data object, can't parse to json:")
@@ -55,7 +52,7 @@ func getJsonBytesFromMap(data map[string]interface{}) ([]byte, error) {
 	return jsonData, nil
 }
 
-// Creates a new Request to Shopify and returns
+// Request Creates a new Request to Shopify and returns
 // the response as a map[string]interface{}.
 // method: GET/POST/PUT - string
 // url: target endpoint like "products" - string
@@ -63,12 +60,11 @@ func getJsonBytesFromMap(data map[string]interface{}) ([]byte, error) {
 // Usage: shopify.request("GET","products",nil)
 func (shopify *Shopify) Request(method, endpoint string, data map[string]interface{}) ([]byte, []error) {
 	//	fmt.Println("[request] Arguments: ", method, endpoint, data)
-
-	jsonData, _ := getJsonBytesFromMap(data)
+	jsonData, _ := getJSONBytesFromMap(data)
 	//	fmt.Println("[request] data: ", string(jsonData))
 
 	targetURL := shopify.createTargetURL(endpoint)
-	//	fmt.Println("[request] targetUrl: ", targetURL)
+	//	fmt.Println("[request] targetURL: ", targetURL)
 
 	request := gorequest.New()
 	request.Get(targetURL)
@@ -79,39 +75,36 @@ func (shopify *Shopify) Request(method, endpoint string, data map[string]interfa
 
 	_, body, errs := request.End()
 
-
 	return []byte(body), errs
 }
 
-// Makes a GET request to shopify with the
+// Get Makes a GET request to shopify with the
 // given endpoint.
 // Usage:
 // shopify.Get("products/5.json")
 // shopify.Get("products/5/variants.json")
 func (shopify *Shopify) Get(endpoint string) ([]byte, []error) {
-
-	targetUrl := shopify.createTargetURL(endpoint)
-
+	targetURL := shopify.createTargetURL(endpoint)
 	request := gorequest.New()
-	_, body, errs := request.Get(targetUrl).End()
+	_, body, errs := request.Get(targetURL).End()
 
 	return []byte(body), errs
 }
 
-// Makes a POST request to shopify with the
+// Post Makes a POST request to shopify with the
 // given endpoint and data.
 // Usage:
 // shopify.Post("products", map[string]interface{} = product data map)
 func (shopify *Shopify) Post(endpoint string, data map[string]interface{}) ([]byte, []error) {
 
-	targetUrl := shopify.createTargetURL(endpoint)
-	jsonData, err := getJsonBytesFromMap(data)
+	targetURL := shopify.createTargetURL(endpoint)
+	jsonData, err := getJSONBytesFromMap(data)
 	if err != nil {
 		return nil, []error{err}
 	}
 
 	request := gorequest.New()
-	request.Post(targetUrl)
+	request.Post(targetURL)
 	if jsonData != nil && data != nil {
 		request.Send(string(jsonData))
 	}
@@ -120,20 +113,20 @@ func (shopify *Shopify) Post(endpoint string, data map[string]interface{}) ([]by
 	return []byte(body), errs
 }
 
-// Makes a PUT request to shopify with the
+// Put Makes a PUT request to shopify with the
 // given endpoint and data.
 // Usage:
 // shopify.Put("products", map[string]interface{} = product data map)
 func (shopify *Shopify) Put(endpoint string, data map[string]interface{}) ([]byte, []error) {
 
-	targetUrl := shopify.createTargetURL(endpoint)
-	jsonData, err := getJsonBytesFromMap(data)
+	targetURL := shopify.createTargetURL(endpoint)
+	jsonData, err := getJSONBytesFromMap(data)
 	if err != nil {
 		return nil, []error{err}
 	}
 
 	request := gorequest.New()
-	request.Put(targetUrl)
+	request.Put(targetURL)
 	if jsonData != nil && data != nil {
 		request.Send(string(jsonData))
 	}
@@ -142,16 +135,16 @@ func (shopify *Shopify) Put(endpoint string, data map[string]interface{}) ([]byt
 	return []byte(body), errs
 }
 
-// Makes a DELETE request to shopify with the
+// Delete Makes a DELETE request to shopify with the
 // given endpoint.
 // Usage:
 // shopify.Delete("products/5.json")
 func (shopify *Shopify) Delete(endpoint string) ([]byte, []error) {
 
-	targetUrl := shopify.createTargetURL(endpoint)
+	targetURL := shopify.createTargetURL(endpoint)
 
 	request := gorequest.New()
-	_, body, errs := request.Delete(targetUrl).End()
+	_, body, errs := request.Delete(targetURL).End()
 
 	return []byte(body), errs
 }
