@@ -47,6 +47,23 @@ type Customer struct {
 	Tags             string `json:"tags"`
 }
 
+//Discount is a discount
+type Discount struct {
+	ID                 int64     `json:"id"`
+	DiscountType       string    `json:"discount_type"`
+	Code               string    `json:"code"`
+	Value              string    `json:"value"`
+	EndsAt             time.Time `json:"ends_at"`
+	StartsAt           time.Time `json:"starts_at"`
+	Status             string    `json:"status"`
+	MinimumOrderAmount string    `json:"minimum_order_amount"`
+	UsageLimit         int       `json:"usage_limit"`
+	AppliesToID        int64     `json:"applies_to_id"`
+	AppliesOnce        bool      `json:"applies_once"`
+	AppliesToResource  string    `json:"applies_to_resource"`
+	TimesUsed          int       `json:"times_used"`
+}
+
 //DiscountCode is a discount code
 type DiscountCode struct {
 	Amount string `json:"amount"`
@@ -63,6 +80,11 @@ type Fulfillment struct {
 	TrackingCompany string    `json:"tracking_company"`
 	TrackingNumber  string    `json:"tracking_number"`
 	UpdatedAt       time.Time `json:"updated_at"`
+}
+
+//Image is a product's image
+type Image struct {
+	Src string `json:"src"`
 }
 
 //LineItem is an order line item
@@ -146,6 +168,27 @@ type PaymentDetails struct {
 	CreditCardCompany string  `json:"credit_card_company"`
 }
 
+//Product is a product
+type Product struct {
+	BodyHTML                       string                   `json:"body_html"`
+	CreatedAt                      time.Time                `json:"created_at"`
+	Handle                         string                   `json:"handle"`
+	ID                             int64                    `json:"id"`
+	Images                         []Image                  `json:"images"`
+	Options                        []map[string]interface{} `json:"options"`
+	ProductType                    string                   `json:"product_type"`
+	PublishedAt                    *time.Time               `json:"published_at"`
+	PublishedScope                 string                   `json:"published_scope"`
+	Tags                           string                   `json:"tags"`
+	TemplateSuffix                 string                   `json:"template_suffix"`
+	Title                          string                   `json:"title"`
+	MetafieldsGlobalTitleTag       string                   `json:"metafields_global_title_tag"`
+	MetafieldsGlobalDescriptionTag string                   `json:"metafields_global_description_tag"`
+	UpdatedAt                      time.Time                `json:"updatedAt"`
+	Variants                       []Variant                `json:"variants"`
+	Vendor                         string                   `json:"vendor"`
+}
+
 //Refund is a refund
 type Refund struct {
 	CreatedAt       time.Time        `json:"created_at"`
@@ -218,4 +261,30 @@ type Transaction struct {
 	Test           bool           `json:"test"`
 	UserID         *int64         `json:"userId"`
 	Currency       string         `json:"currency"`
+}
+
+//Variant is a product's variant
+type Variant struct {
+	BarCode             string    `json:"bar_code"`
+	CompareAtPrice      string    `json:"compare_at_price"`
+	CreatedAt           time.Time `json:"created_at"`
+	FulfillmentService  string    `json:"fulfillment_service"`
+	Grams               float64   `json:"grams"`
+	Weight              float64   `json:"weight"`
+	WeightUnit          string    `json:"weight_unit"`
+	ID                  int64     `json:"id"`
+	InventoryManagement string    `json:"inventory_management"`
+	InventoryPolicy     string    `json:"inventory_policy"`
+	InventoryQuantity   int       `json:"inventory_quantity"`
+	Option1             string    `json:"option1"`
+	Option2             string    `json:"option2"`
+	Option3             string    `json:"option3"`
+	Position            int       `json:"position"`
+	Price               string    `json:"price"`
+	ProductID           int64     `json:"product_id"`
+	RequiresShipping    bool      `json:"requires_shipping"`
+	SKU                 string    `json:"sku"`
+	Taxable             bool      `json:"taxable"`
+	Title               string    `json:"title"`
+	UpdatedAt           time.Time `json:"updated_at"`
 }

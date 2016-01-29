@@ -19,3 +19,13 @@ type TransactionsResponse struct {
 type CountResponse struct {
 	Count int `json:"count"`
 }
+
+//ProductsResponse is a response from products
+type ProductsResponse struct {
+	Products []Product `json:"products"`
+}
+
+//ProductResponse is a response for a product
+type ProductResponse struct {
+	Product Product `json:"product"`
+}

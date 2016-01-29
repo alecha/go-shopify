@@ -79,3 +79,31 @@ func (shopify *Shopify) GetOrdersCount() (int, []error) {
 	}
 	return ordersCount.Count, nil
 }
+
+//GetProducts returns all the orders
+func (shopify *Shopify) GetProducts() ([]Product, []error) {
+	response, errors := shopify.Get("products")
+	if len(errors) > 0 {
+		return nil, errors
+	}
+
+	var products ProductsResponse
+	if err := json.Unmarshal(response, &products); err != nil {
+		return nil, []error{err}
+	}
+	return products.Products, nil
+}
+
+//GetProduct returns all the orders
+func (shopify *Shopify) GetProduct(productID int64) (*Product, []error) {
+	response, errors := shopify.Get(fmt.Sprintf("products/%v", productID))
+	if len(errors) > 0 {
+		return nil, errors
+	}
+
+	var product ProductResponse
+	if err := json.Unmarshal(response, &product); err != nil {
+		return nil, []error{err}
+	}
+	return &product.Product, nil
+}
