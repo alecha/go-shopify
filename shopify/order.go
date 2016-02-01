@@ -2,6 +2,8 @@ package shopify
 
 import "fmt"
 
+var emptyBody = make(map[string]string)
+
 //GetOrders returns all the orders
 func (shopify *Shopify) GetOrders(parameters map[string]string) ([]Order, []error) {
 	var orders OrdersResponse
@@ -16,6 +18,67 @@ func (shopify *Shopify) GetOrders(parameters map[string]string) ([]Order, []erro
 func (shopify *Shopify) GetOrder(orderID int64) (*Order, []error) {
 	var orderResponse OrderResponse
 	response, errors := shopify.Get(fmt.Sprintf("orders/%v", orderID))
+	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
+		return nil, err
+	}
+	return &orderResponse.Order, nil
+}
+
+//CloseOrder closes an order
+func (shopify *Shopify) CloseOrder(orderID int64) (*Order, []error) {
+	var orderResponse OrderResponse
+	response, errors := shopify.Post(fmt.Sprintf("orders/%v/close", orderID), emptyBody)
+	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
+		return nil, err
+	}
+	return &orderResponse.Order, nil
+}
+
+//OpenOrder re-opens an order
+func (shopify *Shopify) OpenOrder(orderID int64) (*Order, []error) {
+	var orderResponse OrderResponse
+	response, errors := shopify.Post(fmt.Sprintf("orders/%v/order", orderID), emptyBody)
+	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
+		return nil, err
+	}
+	return &orderResponse.Order, nil
+}
+
+//CancelOrder cancel an order
+func (shopify *Shopify) CancelOrder(orderID int64) (*Order, []error) {
+	var orderResponse OrderResponse
+	response, errors := shopify.Post(fmt.Sprintf("orders/%v/cancel", orderID), emptyBody)
+	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
+		return nil, err
+	}
+	return &orderResponse.Order, nil
+}
+
+//CreateOrder creates an order
+func (shopify *Shopify) CreateOrder(order map[string]interface{}) (*Order, []error) {
+	var orderResponse OrderResponse
+	response, errors := shopify.Post("orders", order)
+	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
+		return nil, err
+	}
+	return &orderResponse.Order, nil
+}
+
+//EditOrder edits an existing
+func (shopify *Shopify) EditOrder(orderID int64, order map[string]interface{}) (*Order, []error) {
+	var orderResponse OrderResponse
+	order["id"] = orderID
+	response, errors := shopify.Post(fmt.Sprintf("orders/%v", orderID), order)
+	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
+		return nil, err
+	}
+	return &orderResponse.Order, nil
+}
+
+//DeleteOrder cancel an order
+func (shopify *Shopify) DeleteOrder(orderID int64) (*Order, []error) {
+	var orderResponse OrderResponse
+	response, errors := shopify.Delete(fmt.Sprintf("orders/%v", orderID))
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
