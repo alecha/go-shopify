@@ -2,6 +2,19 @@ package shopify
 
 import "time"
 
+//ApplicationCharge is an application charge
+type ApplicationCharge struct {
+	ConfirmationURL string    `json:"confirmation_url"`
+	CreatedAt       time.Time `json:"created_at"`
+	ID              int64     `json:"id"`
+	Name            string    `json:"name"`
+	Price           string    `json:"price"`
+	ReturnURL       string    `json:"return_url"`
+	Status          string    `json:"status"`
+	Test            string    `json:"test"`
+	UpdatedAt       time.Time `json:"updated_at"`
+}
+
 //BillingAddress is a billing address
 type BillingAddress struct {
 	Address1     string `json:"address1"`
