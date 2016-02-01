@@ -11,21 +11,33 @@ Installation
 go get github.com/rapito/go-shopify
 ```
 
-How-to-use
+Dependencies
+------------
+```
+go get github.com/parnurzeal/gorequest
+```
+
+Test dependencies
+------------
+```
+go get github.com/bitly/go-simplejson
+go get github.com/bmizerany/assert
+```
+
+Use it
 ----------
 
 
-- Get Requests
+- GET Requests
 
-```
-    import "fmt"
-    import "github.com/rapito/go-shopify/shopify"
-    ...
+```go
+import "fmt"
+import "github.com/rapito/go-shopify/shopify"
 
-    shop := shopify.New(storeDomain,apiKey,pass)
-    result, _ := shop.Get("products")
+shop := shopify.New(storeDomain,apiKey,pass)
+result, _ := shop.Get("products")
 
-    fmt.Println(string(result))
+fmt.Println(string(result))
 ```
 
 - Check out the *examples* folder for simple usage.
@@ -57,19 +69,3 @@ While I was looking for something cool to do with this new language im learning
 library. Which inspired me to start creating this one.
 
 - Fork it at: [go-shopify](https://github.com/hammond-bones/go-shopify)
-
-Links
------
-
-While I was on my *go-trip* to create this api, I found some awesome libs which made
-my life easier.
-Check them out, hopefully they'll do the same for you:
-
- - http://github.com/parnurzeal/gorequest
- - http://github.com/bmizerany/assert
- - http://github.com/avelino/awesome-go
-
- Other APIs
- ----------
-
- - http://github.com/rapito/go-spotify

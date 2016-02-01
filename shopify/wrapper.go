@@ -3,135 +3,104 @@ package shopify
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 )
 
 //GetOrders returns all the orders
 func (shopify *Shopify) GetOrders() ([]Order, []error) {
-	response, errors := shopify.Get("orders")
-	if len(errors) > 0 {
-		return nil, errors
-	}
-
 	var orders OrdersResponse
-	if err := json.Unmarshal(response, &orders); err != nil {
-		return nil, []error{err}
+	response, errors := shopify.Get("orders")
+	if err := unmarshal(response, errors, &orders); len(err) > 0 {
+		return nil, err
 	}
 	return orders.Orders, nil
 }
 
 //GetOrder returns a order given its id
 func (shopify *Shopify) GetOrder(orderID int64) (*Order, []error) {
-	response, errors := shopify.Get(fmt.Sprintf("orders/%v", orderID))
-	if len(errors) > 0 {
-		return nil, errors
-	}
-
 	var orderResponse OrderResponse
-	if err := json.Unmarshal(response, &orderResponse); err != nil {
-		return nil, []error{err}
+	response, errors := shopify.Get(fmt.Sprintf("orders/%v", orderID))
+	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
+		return nil, err
 	}
 	return &orderResponse.Order, nil
 }
 
 //GetOrderTransactions returns the order's transactions
 func (shopify *Shopify) GetOrderTransactions(orderID int64) ([]Transaction, []error) {
-	response, errors := shopify.Get(fmt.Sprintf("orders/%v/transactions", orderID))
-	if len(errors) > 0 {
-		return nil, errors
-	}
-
-	log.Print(string(response))
-
 	var transactionsResponse TransactionsResponse
-	if err := json.Unmarshal(response, &transactionsResponse); err != nil {
-		return nil, []error{err}
+	response, errors := shopify.Get(fmt.Sprintf("orders/%v/transactions", orderID))
+	if err := unmarshal(response, errors, &transactionsResponse); len(err) > 0 {
+		return nil, err
 	}
 	return transactionsResponse.Transactions, nil
 }
 
 //GetOrderTransactionsCount returns the order's transactions count
 func (shopify *Shopify) GetOrderTransactionsCount(orderID int64) (int, []error) {
-	response, errors := shopify.Get(fmt.Sprintf("orders/%v/transactions/count", orderID))
-	if len(errors) > 0 {
-		return 0, errors
-	}
-
-	log.Print(string(response))
-
 	var count CountResponse
-	if err := json.Unmarshal(response, &count); err != nil {
-		return 0, []error{err}
+	response, errors := shopify.Get(fmt.Sprintf("orders/%v/transactions/count", orderID))
+	if err := unmarshal(response, errors, &count); len(err) > 0 {
+		return 0, err
 	}
 	return count.Count, nil
 }
 
 //GetOrdersCount returns all the products
 func (shopify *Shopify) GetOrdersCount() (int, []error) {
-	response, errors := shopify.Get("orders/count")
-	if len(errors) > 0 {
-		return 0, errors
-	}
-
 	var ordersCount CountResponse
-	if err := json.Unmarshal(response, &ordersCount); err != nil {
-		return 0, []error{err}
+	response, errors := shopify.Get("orders/count")
+	if err := unmarshal(response, errors, &ordersCount); len(err) > 0 {
+		return 0, err
 	}
 	return ordersCount.Count, nil
 }
 
 //GetProducts returns all the orders
 func (shopify *Shopify) GetProducts() ([]Product, []error) {
-	response, errors := shopify.Get("products")
-	if len(errors) > 0 {
-		return nil, errors
-	}
-
 	var products ProductsResponse
-	if err := json.Unmarshal(response, &products); err != nil {
-		return nil, []error{err}
+	response, errors := shopify.Get("products")
+	if err := unmarshal(response, errors, &products); len(err) > 0 {
+		return nil, err
 	}
 	return products.Products, nil
 }
 
 //GetProduct returns all the orders
 func (shopify *Shopify) GetProduct(productID int64) (*Product, []error) {
-	response, errors := shopify.Get(fmt.Sprintf("products/%v", productID))
-	if len(errors) > 0 {
-		return nil, errors
-	}
-
 	var product ProductResponse
-	if err := json.Unmarshal(response, &product); err != nil {
-		return nil, []error{err}
+	response, errors := shopify.Get(fmt.Sprintf("products/%v", productID))
+	if err := unmarshal(response, errors, &product); len(err) > 0 {
+		return nil, err
 	}
 	return &product.Product, nil
 }
 
 //GetProductImages returns all the orders
 func (shopify *Shopify) GetProductImages(productID int64) ([]ProductImage, []error) {
-	response, errors := shopify.Get(fmt.Sprintf("products/%v/images", productID))
-	if len(errors) > 0 {
-		return nil, errors
-	}
-
 	var images ImagesResponse
-	if err := json.Unmarshal(response, &images); err != nil {
-		return nil, []error{err}
+	response, errors := shopify.Get(fmt.Sprintf("products/%v/images", productID))
+	if err := unmarshal(response, errors, &images); len(err) > 0 {
+		return nil, err
 	}
 	return images.Images, nil
 }
 
 //GetProductVariants returns all the product variants
 func (shopify *Shopify) GetProductVariants(productID int64) ([]Variant, []error) {
-	response, errors := shopify.Get(fmt.Sprintf("products/%v/variants", productID))
-	if len(errors) > 0 {
-		return nil, errors
-	}
-
 	var variants VariantsResponse
-	if err := json.Unmarshal(response, &variants); err != nil {
-		return nil, []error{err}
+	response, errors := shopify.Get(fmt.Sprintf("products/%v/variants", productID))
+	if err := unmarshal(response, errors, &variants); len(err) > 0 {
+		return nil, err
 	}
 	return variants.Variants, nil
+}
+
+func unmarshal(responseData []byte, responseErrors []error, output interface{}) []error {
+	if len(responseErrors) > 0 {
+		return responseErrors
+	}
+	if err := json.Unmarshal(responseData, output); err != nil {
+		return []error{err}
+	}
+	return nil
 }

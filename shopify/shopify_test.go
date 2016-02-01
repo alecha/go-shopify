@@ -2,30 +2,31 @@ package shopify
 
 // Import Testing frameworks needed
 import (
-	"testing"
-	"fmt"
-	"github.com/bmizerany/assert"
-	simplejson "github.com/bitly/go-simplejson"
 	"encoding/json"
+	"fmt"
+	"os"
+	"testing"
+
+	simplejson "github.com/bitly/go-simplejson"
+	"github.com/bmizerany/assert"
 )
 
 // Create out store variables for easy access
 const (
-	store  = "your-store-domain-name-here"
-	apiKey = "your-api-key-here"
-	pass   = "your-secret-pass-here"
+	store  = os.Getenv("SHOPIFY_STORE_TEST")
+	apiKey = os.Getenv("SHOPIFY_API_KEY_TEST")
+	pass   = os.Getenv("SHOPIFY_PASSWORD_TEST")
 )
 
 // We declare out shop here just to reuse
 // it later on.
 var shop = New(store, apiKey, pass)
-var objIdToDelete int64
+var objIDToDelete int64
 
 // Should create a new Store.
 func TestNew(t *testing.T) {
-
 	if shop.store != store || shop.apiKey != apiKey || shop.pass != pass {
-		t.Errorf("Error creating client, was suppposed to have store:$v apiKey:$v pass:$v", store, apiKey, pass)
+		t.Errorf("Error creating client, was suppposed to have store:%v apiKey:%v pass:%v", store, apiKey, pass)
 	}
 }
 
@@ -48,28 +49,22 @@ func TestGet(t *testing.T) {
 	fmt.Println(js)
 	fmt.Println(err)
 
-
 	assert.T(t, errors == nil)
 	assert.T(t, products != nil)
-
 
 	//	product := products["products"].([]interface{})
 	//	fmt.Println(product[0]["vendor"])
 	//	fmt.Println(products)
 
-
-
 }
 
 // Should make a new Post Request
 func TestPost(t *testing.T) {
-
 	str := ` {"product": {"title": "MyProduct","body_html": "<strong>Good snowboard!</strong>","vendor": "Burton","product_type": "Snowboard","variants": [  {	"option1": "First",	"price": "10.00",	"sku": 123  },  {	"option1": "Second",	"price": "20.00",	"sku": "123"  }]}}  `
 	var data map[string]interface{}
 	json.Unmarshal([]byte(str), &data)
 
 	result, errors := shop.Post("products", data)
-
 	js, err := simplejson.NewJson(result)
 
 	fmt.Println(js)
@@ -111,7 +106,6 @@ func TestPut(t *testing.T) {
 
 // Should make a new Delete Request
 func TestDelete(t *testing.T) {
-
 	endpoint := fmt.Sprintf("products/%v", objIdToDelete)
 	result, error := shop.Delete(endpoint)
 
@@ -126,6 +120,3 @@ func TestCreateTargetURL(t *testing.T) {
 	test := fmt.Sprintf("https://%s:%s@%s%s/%s.json", apiKey, pass, store, domain, endpoint)
 	assert.Equal(t, result, test)
 }
-
-
-
