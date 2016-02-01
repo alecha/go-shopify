@@ -12,7 +12,7 @@ import (
 )
 
 // Create out store variables for easy access
-const (
+var (
 	store  = os.Getenv("SHOPIFY_STORE_TEST")
 	apiKey = os.Getenv("SHOPIFY_API_KEY_TEST")
 	pass   = os.Getenv("SHOPIFY_PASSWORD_TEST")
@@ -78,7 +78,7 @@ func TestPost(t *testing.T) {
 	assert.T(t, title == "MyProduct")
 
 	id, _ := js.Get("product").Get("id").Int64()
-	objIdToDelete = id
+	objIDToDelete = id
 }
 
 // Should make a new Put Request
@@ -88,7 +88,7 @@ func TestPut(t *testing.T) {
 	var data map[string]interface{}
 	json.Unmarshal([]byte(str), &data)
 
-	endpoint := fmt.Sprintf("products/%v", objIdToDelete)
+	endpoint := fmt.Sprintf("products/%v", objIDToDelete)
 	result, errors := shop.Put(endpoint, data)
 
 	js, err := simplejson.NewJson(result)
@@ -106,7 +106,7 @@ func TestPut(t *testing.T) {
 
 // Should make a new Delete Request
 func TestDelete(t *testing.T) {
-	endpoint := fmt.Sprintf("products/%v", objIdToDelete)
+	endpoint := fmt.Sprintf("products/%v", objIDToDelete)
 	result, error := shop.Delete(endpoint)
 
 	assert.T(t, error == nil, "should be null")
