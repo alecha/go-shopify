@@ -79,9 +79,9 @@ type Discount struct {
 
 //DiscountCode is a discount code
 type DiscountCode struct {
-	Amount string `json:"amount"`
+	Amount string `json:"amount,omitempty"`
 	Code   string `json:"code"`
-	Type   string `json:"type"`
+	Type   string `json:"type,omitempty"`
 }
 
 //Fulfillment is a fulfillment
@@ -218,8 +218,9 @@ type Refund struct {
 	Note            string           `json:"note"`
 	RefundLineItems []RefundLineItem `json:"refund_line_items"`
 	Restock         bool             `json:"restock"`
-	Transactions    []Transaction    `json:"transactions"`
-	UserID          int64            `json:"user_id"`
+	//Transactions    []Transaction    `json:"transactions"`
+	UserID  int64 `json:"user_id"`
+	OrderID int64 `json:"order_id"`
 }
 
 //RefundLineItem is a refund line item
@@ -267,22 +268,23 @@ type TaxLine struct {
 
 //Transaction is a transaction
 type Transaction struct {
-	Amount         string         `json:"amount"`
-	Authorization  *string        `json:"authorization"`
-	CreatedAt      time.Time      `json:"created_at"`
-	DeviceID       *string        `json:"device_id"`
-	Gateway        string         `json:"gateway"`
-	SourceName     string         `json:"source_name"`
-	PaymentDetails PaymentDetails `json:"payment_details"`
-	ID             int64          `json:"id"`
-	Kind           string         `json:"kind"`
-	OrderID        int64          `json:"orderId"`
-	Receipt        string         `json:"receipt"`
-	ErrorCode      string         `json:"error_code"`
-	Status         string         `json:"status"`
-	Test           bool           `json:"test"`
-	UserID         *int64         `json:"userId"`
-	Currency       string         `json:"currency"`
+	ID            int64     `json:"id"`
+	OrderID       int64     `json:"orderId"`
+	Amount        string    `json:"amount"`
+	Kind          string    `json:"kind"`
+	Authorization *string   `json:"authorization"`
+	Message       string    `json:"message"`
+	CreatedAt     time.Time `json:"created_at"`
+	DeviceID      *string   `json:"device_id"`
+	Gateway       string    `json:"gateway"`
+	SourceName    string    `json:"source_name"`
+	//PaymentDetails PaymentDetails `json:"payment_details"`
+	Receipt   string `json:"receipt"`
+	ErrorCode string `json:"error_code"`
+	Status    string `json:"status"`
+	Test      bool   `json:"test"`
+	UserID    *int64 `json:"userId"`
+	Currency  string `json:"currency"`
 }
 
 //Variant is a product's variant

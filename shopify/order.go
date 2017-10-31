@@ -5,9 +5,9 @@ import "fmt"
 var emptyBody = make(map[string]string)
 
 //GetOrders returns all the orders
-func (shopify *Shopify) GetOrders(parameters map[string]string) ([]Order, []error) {
+func (shop *Shopify) GetOrders(parameters map[string]string) ([]Order, []error) {
 	var orders OrdersResponse
-	response, errors := shopify.GetWithParameters("orders", parameters)
+	response, errors := shop.GetWithParameters("orders", parameters)
 	if err := unmarshal(response, errors, &orders); len(err) > 0 {
 		return nil, err
 	}
@@ -15,9 +15,9 @@ func (shopify *Shopify) GetOrders(parameters map[string]string) ([]Order, []erro
 }
 
 //GetOrder returns a order given its id
-func (shopify *Shopify) GetOrder(orderID int64) (*Order, []error) {
+func (shop *Shopify) GetOrder(orderID int64) (*Order, []error) {
 	var orderResponse OrderResponse
-	response, errors := shopify.Get(fmt.Sprintf("orders/%v", orderID))
+	response, errors := shop.Get(fmt.Sprintf("orders/%v", orderID))
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -25,9 +25,9 @@ func (shopify *Shopify) GetOrder(orderID int64) (*Order, []error) {
 }
 
 //CloseOrder closes an order
-func (shopify *Shopify) CloseOrder(orderID int64) (*Order, []error) {
+func (shop *Shopify) CloseOrder(orderID int64) (*Order, []error) {
 	var orderResponse OrderResponse
-	response, errors := shopify.Post(fmt.Sprintf("orders/%v/close", orderID), emptyBody)
+	response, errors := shop.Post(fmt.Sprintf("orders/%v/close", orderID), emptyBody)
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -35,9 +35,9 @@ func (shopify *Shopify) CloseOrder(orderID int64) (*Order, []error) {
 }
 
 //OpenOrder re-opens an order
-func (shopify *Shopify) OpenOrder(orderID int64) (*Order, []error) {
+func (shop *Shopify) OpenOrder(orderID int64) (*Order, []error) {
 	var orderResponse OrderResponse
-	response, errors := shopify.Post(fmt.Sprintf("orders/%v/order", orderID), emptyBody)
+	response, errors := shop.Post(fmt.Sprintf("orders/%v/order", orderID), emptyBody)
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -45,9 +45,9 @@ func (shopify *Shopify) OpenOrder(orderID int64) (*Order, []error) {
 }
 
 //CancelOrder cancel an order
-func (shopify *Shopify) CancelOrder(orderID int64) (*Order, []error) {
+func (shop *Shopify) CancelOrder(orderID int64) (*Order, []error) {
 	var orderResponse OrderResponse
-	response, errors := shopify.Post(fmt.Sprintf("orders/%v/cancel", orderID), emptyBody)
+	response, errors := shop.Post(fmt.Sprintf("orders/%v/cancel", orderID), emptyBody)
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -55,9 +55,9 @@ func (shopify *Shopify) CancelOrder(orderID int64) (*Order, []error) {
 }
 
 //CreateOrder creates an order
-func (shopify *Shopify) CreateOrder(order map[string]interface{}) (*Order, []error) {
+func (shop *Shopify) CreateOrder(order map[string]interface{}) (*Order, []error) {
 	var orderResponse OrderResponse
-	response, errors := shopify.Post("orders", order)
+	response, errors := shop.Post("orders", order)
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -65,10 +65,10 @@ func (shopify *Shopify) CreateOrder(order map[string]interface{}) (*Order, []err
 }
 
 //EditOrder edits an existing
-func (shopify *Shopify) EditOrder(orderID int64, order map[string]interface{}) (*Order, []error) {
+func (shop *Shopify) EditOrder(orderID int64, order map[string]interface{}) (*Order, []error) {
 	var orderResponse OrderResponse
 	order["id"] = orderID
-	response, errors := shopify.Post(fmt.Sprintf("orders/%v", orderID), order)
+	response, errors := shop.Post(fmt.Sprintf("orders/%v", orderID), order)
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -76,9 +76,9 @@ func (shopify *Shopify) EditOrder(orderID int64, order map[string]interface{}) (
 }
 
 //DeleteOrder cancel an order
-func (shopify *Shopify) DeleteOrder(orderID int64) (*Order, []error) {
+func (shop *Shopify) DeleteOrder(orderID int64) (*Order, []error) {
 	var orderResponse OrderResponse
-	response, errors := shopify.Delete(fmt.Sprintf("orders/%v", orderID))
+	response, errors := shop.Delete(fmt.Sprintf("orders/%v", orderID))
 	if err := unmarshal(response, errors, &orderResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -86,9 +86,9 @@ func (shopify *Shopify) DeleteOrder(orderID int64) (*Order, []error) {
 }
 
 //GetOrderTransactions returns the order's transactions
-func (shopify *Shopify) GetOrderTransactions(orderID int64) ([]Transaction, []error) {
+func (shop *Shopify) GetOrderTransactions(orderID int64) ([]Transaction, []error) {
 	var transactionsResponse TransactionsResponse
-	response, errors := shopify.Get(fmt.Sprintf("orders/%v/transactions", orderID))
+	response, errors := shop.Get(fmt.Sprintf("orders/%v/transactions", orderID))
 	if err := unmarshal(response, errors, &transactionsResponse); len(err) > 0 {
 		return nil, err
 	}
@@ -96,9 +96,9 @@ func (shopify *Shopify) GetOrderTransactions(orderID int64) ([]Transaction, []er
 }
 
 //GetOrderTransactionsCount returns the order's transactions count
-func (shopify *Shopify) GetOrderTransactionsCount(orderID int64) (int, []error) {
+func (shop *Shopify) GetOrderTransactionsCount(orderID int64) (int, []error) {
 	var count CountResponse
-	response, errors := shopify.Get(fmt.Sprintf("orders/%v/transactions/count", orderID))
+	response, errors := shop.Get(fmt.Sprintf("orders/%v/transactions/count", orderID))
 	if err := unmarshal(response, errors, &count); len(err) > 0 {
 		return 0, err
 	}
@@ -106,9 +106,9 @@ func (shopify *Shopify) GetOrderTransactionsCount(orderID int64) (int, []error) 
 }
 
 //GetOrdersCount returns all the products
-func (shopify *Shopify) GetOrdersCount() (int, []error) {
+func (shop *Shopify) GetOrdersCount() (int, []error) {
 	var ordersCount CountResponse
-	response, errors := shopify.Get("orders/count")
+	response, errors := shop.Get("orders/count")
 	if err := unmarshal(response, errors, &ordersCount); len(err) > 0 {
 		return 0, err
 	}

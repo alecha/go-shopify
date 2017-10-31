@@ -1,5 +1,10 @@
 package shopify
 
+//DiscountCodeResponse is a response to /discount_codes endpoint
+type DiscountCodeResponse struct {
+	DiscountCode DiscountCode `json:"discount_code"`
+}
+
 //OrdersResponse is a response to /orders endpoint
 type OrdersResponse struct {
 	Orders []Order `json:"orders"`
@@ -13,6 +18,10 @@ type OrderResponse struct {
 //TransactionsResponse is a response to /orders/{id}/transactions
 type TransactionsResponse struct {
 	Transactions []Transaction `json:"transactions"`
+}
+
+type RefundsResponse struct {
+	Refunds []Refund `json:"refunds"`
 }
 
 //CountResponse is a response to counts endpoint
