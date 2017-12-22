@@ -79,6 +79,7 @@ type Discount struct {
 
 //DiscountCode is a discount code
 type DiscountCode struct {
+	ID     int    `json:"id"`
 	Amount string `json:"amount,omitempty"`
 	Code   string `json:"code"`
 	Type   string `json:"type,omitempty"`
